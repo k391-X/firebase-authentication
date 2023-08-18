@@ -62,7 +62,13 @@
         }
     };
 
-    const loginWithGA = () => {
-        logInGoogleFirebase();
+    const loginWithGA = async () => {
+        let status = await logInGoogleFirebase();
+        if (status) {
+            alert('Login with account google successful!');
+            router.push('/');
+        } else {
+            alert('Login with account google failed!');            
+        }
     };
 </script>

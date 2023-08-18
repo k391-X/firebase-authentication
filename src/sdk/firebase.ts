@@ -70,9 +70,15 @@ const checkUserLogin = () => {
 };
 
 const logInGoogleFirebase = async () => {
-    const provider = new GoogleAuthProvider();
-    const response = await signInWithPopup(auth, provider);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    try {
+        const provider = new GoogleAuthProvider();
+        const response = await signInWithPopup(auth, provider);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        return true;    
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 };
 
 export { analytics, registerFirebase, loginFirebase, logOutFirebase, checkUserLogin, logInGoogleFirebase };

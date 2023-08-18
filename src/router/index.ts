@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/logout',
         name: 'Logout',
         component: () => import('../view//Logout/index.vue'),
-    }
+    },
 ];
 
 const router = createRouter({
@@ -47,16 +47,15 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
-    const userJson = localStorage.getItem('user');
+router.beforeEach((to:any, from:any, next:any) => {
+    const user = localStorage.getItem('user');
     
-    if (userJson) {
-      const user = JSON.parse(userJson);
+    if (user || to.path === '/login' || to.path === '/register') {
       next();
     } else {
       next("/login");
     }
-  });
+});
   
 
 export default router;
