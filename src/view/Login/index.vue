@@ -18,6 +18,10 @@
                     Register Here
                 </router-link>
             </p>
+            <p>
+                Login With Google Account?
+                
+            </p>
         </form>
     </div>
 </template>

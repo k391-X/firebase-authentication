@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword, UserCredential, signInWithEmailAndPassword } from "firebase/auth";
+import { 
+    getAuth, UserCredential, onAuthStateChanged, signOut,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword, 
+} from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCoMU6u5SXryoT9HZefTDMl_U4oZKjZ5rk",
@@ -14,10 +18,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics: any = getAnalytics(app);
+const auth = getAuth();
+
 
 const registerFirebase = async (email: string, password: string) => { 
     try {
-        const auth = getAuth();
         const data: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
         console.log(data, 'Successfully registered!');
         return true;
@@ -29,9 +34,9 @@ const registerFirebase = async (email: string, password: string) => {
 
 const loginFirebase = async (email: string, password: string) => {
     try {
-        const auth = getAuth();
         const data: UserCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log(data, 'Successfully logged in!');
+        localStorage.setItem('user', JSON.stringify(data));
         let response = { status: true, data: data };
         return response;
     } catch (error) {
@@ -41,4 +46,27 @@ const loginFirebase = async (email: string, password: string) => {
     }
 };
 
-export { analytics, registerFirebase, loginFirebase };
+const logOutFirebase = () => {
+    signOut(auth).then(() => {
+        localStorage.clear();
+        return true;
+    });
+};
+
+const checkUserLogin = () => {
+    onAuthStateChanged(auth, (user) => { 
+        if (user) {
+            return {
+                status: true,
+                data: user,
+            };
+        } else {
+            return {
+                status: false,
+                data: null,
+            };
+        }
+    });
+}
+
+export { analytics, registerFirebase, loginFirebase, logOutFirebase, checkUserLogin };
