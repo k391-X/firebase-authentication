@@ -33,7 +33,7 @@
     const Register = async () => {
         let status: any = await registerFirebase(email.value, password.value);
         if (status) {
-            alert('Successfully registered!');  
+            alert('Successfully registered!'); 
             router.push('/login');
         } else {
             alert('Register Failed!');

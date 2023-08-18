@@ -18,16 +18,18 @@
                     Register Here
                 </router-link>
             </p>
-            <p>
-                Login With Google Account?
-                
+            <p @click="loginWithGA">
+                Login With Google Account? 
+                <router-link to="#">
+                    Login
+                </router-link>
             </p>
         </form>
     </div>
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
-    import { loginFirebase } from "../../sdk/firebase";
+    import { loginFirebase, logInGoogleFirebase } from "../../sdk/firebase";
     import { useRouter } from "vue-router";
 
     const email = ref("");
@@ -58,5 +60,9 @@
             default: 
                 return errMsg.value = "Email or password is incorrect!";
         }
-    }
+    };
+
+    const loginWithGA = () => {
+        logInGoogleFirebase();
+    };
 </script>

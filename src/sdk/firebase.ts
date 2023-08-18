@@ -3,7 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import { 
     getAuth, UserCredential, onAuthStateChanged, signOut,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword, 
+    signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -67,6 +67,12 @@ const checkUserLogin = () => {
             };
         }
     });
-}
+};
 
-export { analytics, registerFirebase, loginFirebase, logOutFirebase, checkUserLogin };
+const logInGoogleFirebase = async () => {
+    const provider = new GoogleAuthProvider();
+    const response = await signInWithPopup(auth, provider);
+    localStorage.setItem('user', JSON.stringify(response.user));
+};
+
+export { analytics, registerFirebase, loginFirebase, logOutFirebase, checkUserLogin, logInGoogleFirebase };
