@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth, createUserWithEmailAndPassword, UserCredential, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCoMU6u5SXryoT9HZefTDMl_U4oZKjZ5rk",
@@ -14,4 +15,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics: any = getAnalytics(app);
 
-export { analytics };
+const registerFirebase = async (email: string, password: string) => { 
+    try {
+        const auth = getAuth();
+        const data: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log(data, 'Successfully registered!');
+        return true;
+    } catch (error) {
+        console.log(error, 'Register Failed');
+        return false;
+    }
+};
+
+const loginFirebase = async (email: string, password: string) => {
+    try {
+        const auth = getAuth();
+        const data: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log(data, 'Successfully logged in!');
+        let response = { status: true, data: data };
+        return response;
+    } catch (error) {
+        console.log(error, 'Login Failed');
+        let response = { status: false, data:error }
+        return response;
+    }
+};
+
+export { analytics, registerFirebase, loginFirebase };
