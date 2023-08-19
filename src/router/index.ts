@@ -49,10 +49,10 @@ const router = createRouter({
 
 router.beforeEach((to:any, from:any, next:any) => {
     const user = localStorage.getItem('user');
-    
     if (user || to.path === '/login' || to.path === '/register') {
       next();
     } else {
+      alert('You need to login!');
       next("/login");
     }
 });
